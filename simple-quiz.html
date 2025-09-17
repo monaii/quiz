@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Exam Practice - All Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .score-display {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            background: white;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+        
+        .option:hover {
+            background: #e9e9e9;
+        }
+        
+        .option.selected {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .option.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        
+        .check-answers {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .check-answers:hover {
+            background: #0056b3;
+        }
+        
+        .results {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🇮🇹 Italian Exam Practice - All 110 Questions</h1>
+        <div class="score-display" id="scoreDisplay">Score: 0/110</div>
+        <p>Select your answers - feedback appears immediately</p>
+    </div>
+
+
+    <div id="questionsContainer">
+        <!-- Questions will be loaded here -->
+    </div>
+
+    <div class="results" id="results" style="display: none;">
+        <h2>Final Results</h2>
+        <div id="finalScore"></div>
+        <div id="finalAccuracy"></div>
+    </div>
+
+    <script>
+        // All 110 Italian Exam Questions
+        const questions = [
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Marco …. a casa.",
+                options: ["ha corso", "siete corsi", "abbiamo corso", "è corso", "hanno corso"],
+                correct: 3
+            },
+            {
+                question: "Trova l'INTRUSO.",
+                options: ["arancia", "albicocca", "peperone", "pesca", "prugna"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. Io …. a Parigi lunedì.",
+                options: ["andremo", "andrò", "andrei", "ando", "anderò"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Quando studiavo, …. la lezione ad alta voce.",
+                options: ["ha ripetuto", "ripeto", "sono ripetuto", "ripetevo", "ripete"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase. Per fare questa torta al cioccolato,…. tre uova.",
+                options: ["ci serviamo", "ti servi", "mi servono", "mi serve", "mi servo"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con il pronome ed il passato prossimo corretti. Hai mangiato tu tutta la crostata alla frutta? No,… solo una fetta.",
+                options: ["l'ho mangiato", "l'ho mangiata", "ne ho mangiata", "ne ho mangiato", "ne ho mangiate"],
+                correct: 2
+            },
+            {
+                question: "Trova l'espressione appropriata per la seguente situazione. Un tuo amico ha trovato lavoro.",
+                options: ["Buon viaggio!", "Buon compleanno!", "Salute!", "Condoglianze!", "Congratulazioni"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. …. mattina bevo sempre un bel caffè.",
+                options: ["A", "Della", "In", "Di", "Nella"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'imperativo informale. Pietrino,…. ! Non correre!",
+                options: ["aspetta", "aspettite", "aspetti", "aspettino", "aspette"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con un pronome diretto, indiretto o con il NE. Professor Borghese, scusi se … disturbo.",
+                options: ["Le", "Ti", "Ne", "La", "Mi"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con un pronome diretto corretto. Hai chiamato Fiorella? Non ancora, … chiamo più tardi.",
+                options: ["ci", "mi", "lo", "le", "la"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase. Devo correre in banca e devo fare in fretta! … .",
+                options: ["sta per chiudere", "sta chiude", "sta per chiude", "sta chiudere", "per sta chiude"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la parola appropriata. Marta ha bisogno di uno sciroppo per mal di gola e va in …",
+                options: ["Macelleria", "Salumeria", "Latteria", "Farmacia", "Frammenta"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Normalmente andavo in vacanza con i miei amici, ma l'anno scorso …. con la fidanzata.",
+                options: ["ho andato", "sono andato", "siamo andati", "vado", "ero"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. Fra qualche anno quella ragazza … una persona famosa.",
+                options: ["divento", "diventerà", "diventerò", "diventierà", "diventiamo"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Quest'anno … festeggiare il mio compleanno con una grande festa.",
+                options: ["ho voluto", "vogliamo", "è voluto", "vorrà", "ho voluti"],
+                correct: 0
+            },
+            {
+                question: "Trova il plurale di GINOCCHIO.",
+                options: ["ginocchia", "ginocco", "ginocchie", "ginocci", "ginocce"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Ti piacciono i mirtilli? No non lo so, non ….",
+                options: ["li ho mai assaggiati", "le ho mai assaggiate", "l'ho mai assaggiato", "ne ho mai assaggiato", "ne assaggio"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase in modo corretto. Alessia, sei troppo stanca,…!",
+                options: ["hai bisogno di ti riposare", "hai bisogno di riposarte", "ti hai bisogno di riposare", "hai bisogno di riposati", "hai bisogno di riposarti"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase. Puoi aiutarmi con questo esercizio? Mi dispiace, non posso,…",
+                options: ["sto per uscendo", "sto per uscire", "sto esco", "sto per esco", "sto uscire"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con il PRONOME INDIRETTO corretto. Ho fatto un regalo a mia mamma, ... ho regalato un bel braccialetto.",
+                options: ["ci", "vi", "ti", "le", "gli"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Mentre facevo la spesa, voi ... al telefono.",
+                options: ["parlavate", "parlavamo", "parlava", "parlevate", "avete parlato"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. Il mio nuovo vicino ... casa è molto simpatico.",
+                options: ["da", "della", "a", "all", "di"],
+                correct: 4
+            },
+            {
+                question: "Trova l'INTRUSO.",
+                options: ["camicia", "giacca", "gonna", "maglione", "tovaglia"],
+                correct: 4
+            },
+            {
+                question: "Trova l'espressione appropriata per la seguente situazione. Un'amica parte per un viaggio.",
+                options: ["In bocca al lupo!", "Buon viaggio!", "Auguri!", "Buon Appetito!", "Congratulazioni!"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Non . . . i compiti.",
+                options: ["abbiamo ancora finito", "sei ancora finito", "siamo ancora finiti", "abbiamo ancora finiti", "è ancora finito"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'indicativo imperfetto. Da giovane ... la modella.",
+                options: ["hanno fatto", "facevo", "fareste", "facevano", "facevate"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. A che ora voi ... lezione domani?",
+                options: ["avranno", "averete", "avremo", "avaranno", "avrete"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con l'imperativo informale. Paola, ... ! Non stare lì sulla porta!",
+                options: ["entrate", "entri", "entrino", "entre", "entra"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con un pronome diretto, indiretto o con il NE. Signora, . . posso aiutare?",
+                options: ["La", "Le", "mi", "ti", "gli"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase in modo corretto. Marta ... molto presto.",
+                options: ["si deve alzarsi", "deve alzare si", "deve alzare", "si deve alzare", "deve si alzare"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con il PRONOME DIRETTO corretto. Chi mi accompagna a casa? …. accompagno io.",
+                options: ["Mi", "Ti", "Lo", "Vi", "Te"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. La prossima settimana partiamo . . . Venezia.",
+                options: ["alla", "per", "a", "in", "di"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Mentre ero in casa, ... una telefonata di un'amica.",
+                options: ["sono ricevuto", "ricevevo", "ricevo", "riceva", "ho ricevuto"],
+                correct: 4
+            },
+            {
+                question: "Trova il plurale di: ARANCIA.",
+                options: ["aranca", "arance", "aranci", "arancie", "arancee"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. Stasera noi . . . cucina thailandese.",
+                options: ["mangiamo", "mangerete", "mangiassimo", "mangeremo", "mangeranno"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Ragazzi, . i compiti?",
+                options: ["hanno fatto", "hai fato", "siete fatti", "avete fatuto", "avete fatto"],
+                correct: 4
+            },
+            {
+                question: "Trasforma il VERBO al passato prossimo. Che cosa mangi?",
+                options: ["siete mangiati", "è mangiato", "sei mangiato", "hai mangiati", "hai mangiato"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la parola appropriata. Giulio vuole prendere un mazzo di rose per il compleanno di sua moglie e va dal ...",
+                options: ["fioraio", "fruttivendolo", "pasticciere", "giornalaio", "tabaccaio"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con il PRONOME DIRETTO corretto. Hai chiamato Fiorella? Non ancora, ... chiamo più tardi.",
+                options: ["la", "La", "ti", "mi", "ci"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'indicativo imperfetto. Quanto ... da bambino?",
+                options: ["disegnavate", "disegnavano", "disegnavamo", "disegnavi", "disegni"],
+                correct: 3
+            },
+            {
+                question: "Trova il plurale di: PROBLEMA.",
+                options: ["problemini", "problema'", "probleme", "problemi", "problema"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con il pronome diretto ed il passato prossimo. Hai finito gli esercizi di matematica? Sì', ... mezz'ora fa.",
+                options: ["li ho finito", "l'ho finito", "li ho finiti", "l'ho finiti", "lo ho finiti"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase in modo corretto. Martina e Cesare ... la prossima estate.",
+                options: ["si hanno deciso di sposare", "hanno deciso di si sposare", "si hanno deciso di sposarsi", "hanno deciso di sposarsi", "hanno deciso di sposare"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con l'aggettivo possessivo corretto. Vado a prendere mio zio e ... cugini all'aeroporto.",
+                options: ["suoi", "nostri", "i miei", "miei", "loro"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase. Quanto tempo starai a Parigi? ... starò due settimane.",
+                options: ["Li", "Ne", "Ci", "Lo", "Mi"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Quando voi andavate a casa, Giorgia... Marco davanti.",
+                options: ["ha incontrato", "incontra", "è incontrato", "incontrerei", "incontrava"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con l'imperativo informale. Michele, ... subito a casa!",
+                options: ["torne", "torni", "tornii", "torna", "tornino"],
+                correct: 3
+            },
+            {
+                question: "Trasforma il VERBO al passato prossimo. Oggi cerco un volo per New York su internet.",
+                options: ["è cercato", "avete cercati", "ho cercato", "sono cercato", "sei cercati"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con l'imperativo informale negativo. Alessandro, ... in disordine la tua camera.",
+                options: ["non mette", "non metti", "metti non", "mettere non", "non mettere"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la parola appropriata. Che bel quadro, l'hai fatto tu? Sì', mi piace ...",
+                options: ["dipingere", "ascoltare", "leggere", "scrivere", "ballare"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Questa volta ... cambiare l'arredamento della casa.",
+                options: ["è voluto", "ho voluto", "hanno voluti", "sono voluto", "hai voluta"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la preposizione. L'esame di italiano inizia ... 9:30.",
+                options: ["per", "alla", "a", "fra", "alle"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. ... con difficoltà questi test.",
+                options: ["Ho conclusso", "Ho conclauso", "Ho concluduto", "Ho concluso", "È concluso"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase. Sono molto emozionata, ... con Marco.",
+                options: ["sto per esco", "sto per uscire", "sto esco", "sto per uscendo", "sto uscire"],
+                correct: 1
+            },
+            {
+                question: "Trasforma il VERBO al passato prossimo. Di sera ci addormentiamo davanti alla tv.",
+                options: ["ci abbiamo addormentato", "ti sono addormentato", "vi siete addormentati", "ci siamo addormentati", "ti hai addormentato"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. Ieri la riunione ... alle 10.",
+                options: ["è cominciato", "ha cominciato", "è cominciata", "ho cominciato", "ha cominciata"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta del passato prossimo. ... partire alle 2 di notte.",
+                options: ["Siamo dovuti", "Ho dovuto", "Ha dovuto", "È dovuti", "Ha dovuta"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'indicativo imperfetto. Da piccola io ... sempre a nascondino.",
+                options: ["giocava", "giocavo", "giocevo", "gioca", "giocavamo"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Quando avevo 15 anni, ... sempre in piscina.",
+                options: ["andavo", "sono andato", "vado", "andava", "andevo"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta. Prima vivevo a Torino, poi ... a Roma.",
+                options: ["mi abbiamo trasferiti", "mi ho trasferito", "mi trasferivo", "mi trasferisco", "mi sono trasferito"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. I miei genitori ... la mia nuova casa.",
+                options: ["pagheranno", "pagherete", "pageranno", "pagerrete", "pagerete"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'indicativo futuro. Quanto ... voi qui a Torino?",
+                options: ["rimanerete", "rimarrete", "rimanrete", "rimarremo", "rimaneremo"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con il Pronome Diretto corretto. Mi piacciono le tagliatelle, ... cucino sempre!",
+                options: ["la", "mi", "lo", "le", "li"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con il pronome diretto ed il passato prossimo corretti. Hai mangiato i carciofi ripieni? No, non ...",
+                options: ["le ho ancora mangiate", "l'ho ancora mangiati", "l'ho ancora mangiato", "li ho ancora mangiato", "li ho ancora mangiati"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con il pronome ed il passato prossimo corretti. Hai già fatto tutti i compiti? No, mi devo sbrigare, ... solo tre!",
+                options: ["ne ho fatti", "li ho fatti", "ne ho gatto", "l'ho fatti", "li ho fatto"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase. Vai spesso al cinema? No, non ... vado molto spesso, scarico i film da internet.",
+                options: ["ti", "lo", "ne", "ci", "mi"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase. Devo correre in segreteria studenti e devo fare in fretta! ...",
+                options: ["Sta per chiudendo", "Sta per chiudere", "Sta per chiude", "Sta chiudere", "Sta chiude"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con l'imperativo informale. Pietrino, ... ! Accomodati!",
+                options: ["entrate", "entri", "entre", "entra", "entrino"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con l'imperativo negativo. Paolo, ... ! Devi finire i compiti!",
+                options: ["non uscire", "non esci", "non esca", "non usci", "uscire non"],
+                correct: 0
+            },
+            {
+                question: "Trova il plurale di: Braccio.",
+                options: ["Braccie", "Bracci", "Braccia", "Bracce", "Braccii"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con l'aggettivo possessivo corretto. Alberto ha organizzato una festa per ... fratello.",
+                options: ["loro", "la sua", "il suo", "suo", "la mia"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. L'anno prossimo vado a studiare ... Stati Uniti.",
+                options: ["a", "in", "agli", "nei", "negli"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. Ho vissuto a Roma ... tre anni, ma tanto tempo fa. Ora vivo a Firenze.",
+                options: ["da", "per", "fra", "in", "tra"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la preposizione corretta. Non ci vedo, devo comprare un nuovo paio di occhiali ... Vista.",
+                options: ["dai", "di", "da", "per", "con"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la parola appropriata. Ho finito il prosciutto, devo andare in ...",
+                options: ["salumiere", "salumeria", "mercato", "latteria", "panettiere"],
+                correct: 1
+            },
+            {
+                question: "Trova l'intruso.",
+                options: ["Pomodoro", "Melanzana", "Insalata", "Albicocca", "Peperone"],
+                correct: 3
+            },
+            {
+                question: "Trova l'intruso.",
+                options: ["Camicia", "Gonna", "Asciugamano", "Giacca", "Maglione"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la parola appropriata. Marta è appassionata di libri ... ed è più brava di Sherlock Holmes!",
+                options: ["poesie", "verdi", "neri", "d'avventura", "gialli"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase in modo corretto. Arianna, sei troppo stanca, ... !",
+                options: ["hai bisogno di rilassarti", "hai bisogno di ti rilassare", "ti hai bisogno di rilassare", "hai bisogno di rilassarte", "hai bisogno di ti rilassarti"],
+                correct: 0
+            },
+            {
+                question: "Trova l'espressione appropriata per la seguente situazione. Un tuo amico ha appena superato l'esame di italiano!",
+                options: ["Buon viaggio!", "Buona fortuna!", "Buon appetito!", "Complimenti!", "In bocca al lupo!"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la forma corretta: Carlo ha chiesto scusa a Marta …. non averla invitata alla festa.",
+                options: ["perciò", "perché", "per", "siccome", "visto che"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la forma corretta: Luigi crede….. il più bravo della classe, ma non è vero!",
+                options: ["di essere", "che sia", "che fosse", "è", "che è"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con l'aggettivo possessivo corretto: Alberto ha organizzato una festa per ... fratello.",
+                options: ["loro", "la sua", "il suo", "Suo la mia", "suo"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase con la preposizione corretta: L'anno prossimo vado a studiare ... Stati Uniti.",
+                options: ["a", "agli", "nei", "negli", "in"],
+                correct: 3
+            },
+            {
+                question: "Completa la frase con la preposizione corretta: Se tutto va bene, gli ospiti arrivano ….. 15 minuti.",
+                options: ["tra", "nei", "per", "di", "a"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la preposizione corretta: Il computer si è rotto …. colpa di Carol.",
+                options: ["a", "ma", "tra", "di", "per"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con la preposizione corretta: La strada mi sembra molto stretta e non sono sicuro di passar…",
+                options: ["si", "ci", "me", "lo", "di"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta: Quando ero piccola io e mia madre ….. ai giardini.",
+                options: ["vado", "andavamo", "andavo", "andrò", "andiamo"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con la forma verbale corretta: Fra un giorno …. per le vacanze e … alle Maldive.",
+                options: ["partirò - andrò", "farò - riparerò", "sono andata - sono partita", "aggiusterò - temerò", "parto - vado"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la preposizione corretta: D'estate andiamo in montagna, torniamo in città …. settembre.",
+                options: ["a", "per", "fra", "di", "da"],
+                correct: 0
+            },
+            {
+                question: "Plurale di \"Dito\"",
+                options: ["Diti", "Dite", "Dita", "Ditte", "Ditti"],
+                correct: 2
+            },
+            {
+                question: "Completa il testo con il tempo verbale appropriato. Marco e' uno studente e (frequenta, ha frequentato, è frequentato, frequenterà ) il secondo anno di Architettura. L'anno scorso (vince, ha vinto, vincerà, ha vinciuto, vinceva) una borsa di studio Erasmus ed e' partito per la Germania, dove e' rimasto per sei mesi. In quel periodo lui ha fatto nuove conoscenze e ( si diverte, si divertiva , si ha divertito, si è divertito, si divertirà) tantissimo. Ogni fine settimana lui e i suoi amici prendevano l'auto, ( andavano, vado , andava , andrò) ai nuovi posti e, naturalmente, ogni scusa era buona per bere birra! Marco ora vuole ripetere un'esperienza simile e fra alcuni mesi ( partirà, partiva, è partito, siamo partiti ) per gli Stati Uniti per un tirocinio.",
+                options: ["frequenta, ha vinto, si è divertito, andavano, partirà"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Torino e' una bella( città , nazione, capoluogo, regione, periferia ): in Piemonte: ha circa un milione di abitanti… ci sono molti (palazzi, stradi, chiese, industrie, università )… Ci sono molti( vie, strade, stadi, fiumi, parchi) ed aree verdi… In centro ci sono anche molti (locali, negozi, parchi, centri , rumori) notturni… Gli abitanti di Torino sono molto (socievole , chiacchierone, cordiali , aperte , tranquille )…",
+                options: ["città, palazzi, parchi, locali, cordiali"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Claudio e Sonia abitano in un bell'appartamento… La cucina è piuttosto ampia, c'è un bel (frigo, tavolo, armadietto, forno, divano)… In salotto, sopra ad un bellissimo (divano, armadio, tappeto, lavandino, quadro)… In uno dei due bagni ci sono due (lavastoviglie, lavandini, comodini, salotti, librerie)… Nella loro camera da letto c'è un (stereo, gabinetto, cassettone, orto, letto)… e alle finestre ci sono delle belle (lavatrici, vasche, scrivanie, librerie, tende)…",
+                options: ["tavolo, quadro, lavandini, cassettone, tende"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Vivo in un quartiere in (centro, fuori, periferia, area, spazio)… L'aria è (polluta, pulita, inquinamento, inquinata, polluzione)… e le strade non sono molto (sicure, violente, insicure, sicurezza, violenza)… ma per fortuna i (strisce pedonali, mezzi di trasporto, pedoni, marciapiedi, trasporto)… sono piuttosto efficienti… ci sono tanti (attività, culturali, manifestazioni, persone, negozi)…",
+                options: ["periferia, inquinata, sicure, mezzi di trasporto, negozi"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Conosci Rachele? Sì, è quella ragazza alta e con i capelli (castagna, castani, gialli, giallo, castana)… Lei ha una buona (carattere, personalità, umorismo, tipo, umore)… è allegra e (frottole, sincera, bugiarda, bugia, onesto)… Un suo difetto? È troppo (chiacchierona, chiacchierone, timida, chiusa, bugiarda)…",
+                options: ["castani, personalità, sincera, chiacchierona"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con il tempo verbale appropriato. Pietro è uno studente e (ha frequentato, frequenterà, frequenta, frequentava, è frequentato) il secondo anno di Ingegneria. L'anno scorso (ha prenduto, prende, ha preso, prendeva, prenderà) una borsa di studio Erasmus… ha fatto nuove conoscenze e (andava, è andato, va, si è andato, andrà) a tante feste. Ogni fine settimana… (visitavano, visitano, visiteranno, hanno visitato, visitevano) città diverse! Pietro fra alcuni mesi (si trasferirà, si è trasferito, si trasferiva, trasferirà, trasferisce) negli Stati Uniti…",
+                options: ["frequenta, ha preso, è andato, visitavano, si trasferirà"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con il tempo verbale appropriato. Giulia lavora come giornalista e (scrive, scriverà, ha scritto, scriveva, è scritta)… Due anni fa (ha deciso, decide, deciderà, decideva, è deciso)… Durante quel periodo… (conosce, conosceva, ha conosciuto, conoscerà, è conosciuta)… Ogni weekend… (scoprono, scopriranno, hanno scoperto, scoprivano, scopre)… Tra qualche mese Giulia (inizierà, inizia, ha iniziato, iniziava, inizierà)…",
+                options: ["scrive, ha deciso, ha conosciuto, scoprivano, inizierà"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Conosci Marco? Sì, è quel ragazzo basso e con gli occhi (azzurro, azzurra, azzurri, azzurre, blu)… porta sempre degli occhiali da (sole, testa, naso, vista, occhio)… Lui ha un gran (carattere, energia, difetto, talento, senso)… è simpatico e (gentile, arrabbiato, falso, antipatico, sgarbato)… Un suo difetto? È un po' troppo (testardo, testardi, gentile, intelligente, distratto)…",
+                options: ["azzurri, vista, talento, gentile, testardo"],
+                correct: 0
+            },
+            {
+                question: "Completa il testo con la parola appropriata. Bologna è una meravigliosa (metropoli, provincia, località, destinazione, zona)… Il centro storico conserva tanti (edifici, monumenti, strutture, torri, musei)… La città è ricca di (giardini, viali, sentieri, corsi d'acqua, boschi)… non mancano i (bar, pub, ristoranti, caffè, club)… Gli abitanti di Bologna sono molto (accoglienti, disponibili, gentili, simpatici, calorosi)…",
+                options: ["metropoli, monumenti, giardini, ristoranti, accoglienti"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma corretta: Marta pensa ___ molto simpatica, ma in realtà a volte è un po' antipatica.",
+                options: ["di essere", "che sia", "che fosse", "è", "che è"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma corretta: Anna vuole comprare una torta per la festa di suo figlio e va dal ___.",
+                options: ["pasticciere", "macellaio", "farmacista", "pescivendolo", "panettiere"],
+                correct: 0
+            },
+            {
+                question: "Completa la frase con la forma corretta: Il prossimo inverno vorrei fare un viaggio ___ Alpi per sciare.",
+                options: ["a", "agli", "nei", "negli", "sulle"],
+                correct: 4
+            },
+            {
+                question: "Completa la frase con il pronome corretto. Scusi signora, posso accompagnar… all'uscita?",
+                options: ["Ti", "La", "Le", "Ne", "Mi"],
+                correct: 1
+            },
+            {
+                question: "Completa la frase con il pronome giusto. Questi documenti sono importanti. Devi legger… con attenzione.",
+                options: ["Gli", "Li", "Ne", "Le", "Lo"],
+                correct: 1
+            },
+            {
+                question: "Scegli la forma corretta. Hai parlato con Luca? Sì, … ho spiegato tutto ieri.",
+                options: ["Le", "Li", "Gli", "Ne", "La"],
+                correct: 2
+            },
+            {
+                question: "Trova il plurale di UOVO.",
+                options: ["uove", "uova", "uovi", "uovì", "uovette"],
+                correct: 1
+            },
+            {
+                question: "Scegli la forma corretta del passato prossimo. Marta, hai visto il mio cellulare? No, non … mai.",
+                options: ["lo ho visto", "la ho visto", "l'ho visto", "ne ho visto", "gli ho visto"],
+                correct: 2
+            },
+            {
+                question: "Completa la frase in modo corretto. Paola ... al lavoro alle 8:00.",
+                options: ["deve arrivare", "si deve arrivare", "deve si arrivare", "si arriva deve", "deve arrivarsi"],
+                correct: 0
+            }
+        ];
+
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function loadQuestions() {
+            const container = document.getElementById('questionsContainer');
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${index + 1}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectAnswer(${index}, ${optIndex})" data-question="${index}" data-option="${optIndex}">
+                                ${String.fromCharCode(65 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function selectAnswer(questionIndex, optionIndex) {
+            // Remove previous selection for this question
+            document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Add selection to clicked option
+            document.querySelector(`[data-question="${questionIndex}"][data-option="${optionIndex}"]`).classList.add('selected');
+            
+            // Store answer
+            userAnswers[questionIndex] = optionIndex;
+            
+            // Check answer immediately
+            checkSingleAnswer(questionIndex, optionIndex);
+            
+            // Update score display
+            updateScore();
+        }
+
+        function checkSingleAnswer(questionIndex, selectedOption) {
+            const correctAnswer = questions[questionIndex].correct;
+            
+            // Remove all styling first
+            document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Mark user's answer
+            document.querySelector(`[data-question="${questionIndex}"][data-option="${selectedOption}"]`).classList.add('incorrect');
+            
+            // Mark correct answer
+            document.querySelector(`[data-question="${questionIndex}"][data-option="${correctAnswer}"]`).classList.add('correct');
+            
+            // If user was correct, change their answer to green
+            if (selectedOption === correctAnswer) {
+                document.querySelector(`[data-question="${questionIndex}"][data-option="${selectedOption}"]`).classList.remove('incorrect');
+                document.querySelector(`[data-question="${questionIndex}"][data-option="${selectedOption}"]`).classList.add('correct');
+            }
+        }
+
+        function updateScore() {
+            const answered = userAnswers.filter(answer => answer !== null).length;
+            let correct = 0;
+            
+            // Count correct answers
+            questions.forEach((q, index) => {
+                if (userAnswers[index] !== null && userAnswers[index] === q.correct) {
+                    correct++;
+                }
+            });
+            
+            document.getElementById('scoreDisplay').textContent = `Score: ${correct}/${answered} (${questions.length} total)`;
+            
+            // Show final results when all questions are answered
+            if (answered === questions.length) {
+                const accuracy = Math.round((correct / questions.length) * 100);
+                document.getElementById('finalScore').innerHTML = `<h3>Final Score: ${correct}/110</h3>`;
+                document.getElementById('finalAccuracy').innerHTML = `<h3>Accuracy: ${accuracy}%</h3>`;
+                document.getElementById('results').style.display = 'block';
+            }
+        }
+
+        // Load questions when page loads
+        window.onload = function() {
+            loadQuestions();
+        };
+    </script>
+</body>
+</html>
